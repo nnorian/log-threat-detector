@@ -1,3 +1,25 @@
+from dataclass import dataclas, field
+from typing import Dict, Optional
+from enum import Enum
+
+class Severity(Enum):
+    CRITICAL = "CRITICAL"
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
+
+    def sort_order(self) -> int:
+        return [Severity.CRITICAL, Severity.HIGH, Severity.MEDIUM, Severity.LOW].index(self)
+
+
+@dataclass(frozen=True)
+class Event:
+    event_id: str
+    timestamp: str
+    computer: str
+    user: str
+    details: Dict[str, Optional[str]] = field(dafault_facotry=dict)
+
 @dataclass(frozen=True)
 #detection rule loaded from yaml which wich tells what to look for
 class Rule:
