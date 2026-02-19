@@ -1,1 +1,3 @@
-samples/*.evtx
+samples/credential_access
+samples/defense_evasion
+samples/persistence
