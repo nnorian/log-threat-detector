@@ -1,0 +1,7 @@
+name: user added to admin group
+event_id: 4732
+description: a user was added to a privileged local group
+mitre_technique: T1098
+mitre_name: account manipulation
+severity: HIGH
+threshold: 1
