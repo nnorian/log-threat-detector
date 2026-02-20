@@ -21,10 +21,10 @@ class MarkdownReporter(IReporter):
 
         lines = []
 
-        lines.append("#threat detection report")
-        lines.append(f"\n**generated:** {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-        lines.append(f"\n**events analyzed:**{total_events:,}")
-        lines.append(f"\n**alert triggered:**{len(alerts)}")
+        lines.append("# threat detection report")
+        lines.append(f"\n**generated:** {datetime.now().strftime( '%d/%m/%Y %H:%M:%S')}")
+        lines.append(f"\n**events analyzed:** {total_events:,}")
+        lines.append(f"\n**alert triggered:** {len(alerts)}")
 
         if not alerts:
             lines.append("\n")
