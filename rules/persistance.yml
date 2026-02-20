@@ -1,0 +1,7 @@
+name: scheduled task created
+event_id: 4698
+description: possible persistence mechanism was creted
+mitre_technique: T1053
+mitre_name: scheduled task
+severity: MEDIUM
+threshold: 1
