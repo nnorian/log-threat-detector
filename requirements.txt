@@ -1,7 +1,4 @@
 python-evtx==0.8.1
-pandas
 pyyaml
-rich
-jinja2
 lxml
 pytest
