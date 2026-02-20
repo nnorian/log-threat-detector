@@ -1,0 +1,7 @@
+name: brute force login attempt
+event_id: 4625
+description: multipl failed login attempts detected
+mitre_technique: T1110
+mitre name: brute force 
+severity: HIGH
+threshold: 5
