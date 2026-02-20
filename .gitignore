@@ -1,3 +1,18 @@
+# Sample log files (large binary evtx files)
 samples/credential_access
 samples/defense_evasion
 samples/persistence_p
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual environments
+.venv/
+secure/
+
+# Generated reports
+reports/
