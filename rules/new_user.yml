@@ -1,0 +1,7 @@
+name: new user account created
+event_id: 4720
+description: a new local user account was created
+mitre_technique: T1136
+mitre_name: create account
+severity: MEDIUM
+threshold: 1
