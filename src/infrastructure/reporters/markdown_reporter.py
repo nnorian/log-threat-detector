@@ -8,7 +8,7 @@ from domain.interfaces import IReporter
 
 logger = logging.getLogger(__name__)
 
-class MarkdownReporter(Ireporter):
+class MarkdownReporter(IReporter):
 
     def __init__(self, output_path: str = None) -> None:
         if output_path is None:
@@ -22,7 +22,7 @@ class MarkdownReporter(Ireporter):
         lines = []
 
         lines.append("#threat detection report")
-        lines.append("\n**generated:**{datetime.now)().strftime('%d/%m/%Y_%H:%M:%S')}")
+        lines.append(f"\n**generated:** {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
         lines.append(f"\n**events analyzed:**{total_events:,}")
         lines.append(f"\n**alert triggered:**{len(alerts)}")
 
@@ -36,7 +36,7 @@ class MarkdownReporter(Ireporter):
             lines.append("|----------|------|----------|----------|-----------|-------|----------|")
 
             for a in alerts:
-                lines.aapend(
+                lines.append(
                     f"| {a.severity.value}"
                     f"| {a.rule_name}"
                     f"| {a.event_id}"

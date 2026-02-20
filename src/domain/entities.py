@@ -1,4 +1,4 @@
-from dataclass import dataclas, field
+from dataclasses import dataclass, field
 from typing import Dict, Optional
 from enum import Enum
 
@@ -18,7 +18,7 @@ class Event:
     timestamp: str
     computer: str
     user: str
-    details: Dict[str, Optional[str]] = field(dafault_facotry=dict)
+    details: Dict[str, Optional[str]] = field(default_factory=dict)
 
 @dataclass(frozen=True)
 #detection rule loaded from yaml which wich tells what to look for
@@ -38,6 +38,7 @@ class Alert:
     rule_name: str
     event_id: str
     severity: Severity
+    mitre_technique: str
     mitre_name: str
     description: str
     occurence_count: int

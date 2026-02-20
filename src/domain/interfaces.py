@@ -4,11 +4,19 @@ from typing import List
 from domain.entities import Event, Rule, Alert
 
 class ILogParser(ABC):
-    #contract for anything that loads detection rules from a source 
+    # contract for anything that parses a log source into events
+
+    @abstractmethod
+    def parse(self, source: str) -> List[Event]:
+        # parses a log file and returns a list of event objects
+        ...
+
+class IRuleLoader(ABC):
+    # contract for anything that loads detection rules from a source
 
     @abstractmethod
     def load(self, source: str) -> List[Rule]:
-        # loads rules and returns a list of rule objects 
+        # loads rules and returns a list of rule objects
         ...
 
 class IDetector(ABC):

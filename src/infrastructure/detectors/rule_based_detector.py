@@ -1,5 +1,5 @@
 import logging 
-from collections import Counter, defauletdict
+from collections import Counter, defaultdict
 from typing import List, Dict
  
 from domain.entities import Event, Rule, Alert, Severity
@@ -14,7 +14,7 @@ _SEVERITY_ORDER = [Severity.CRITICAL, Severity.HIGH,Severity.MEDIUM, Severity.LO
 class RuleBasedDetector(IDetector):
     #countes event id occurances against rule tresholds 
 
-    def detect(self, events: List[Event], rules: List[rule]) -> List[Alert]:
+    def detect(self, events: List[Event], rules: List[Rule]) -> List[Alert]:
         # match event against rules 
         if not events:
             logger.warning("no events provided")
@@ -31,26 +31,26 @@ class RuleBasedDetector(IDetector):
 
         alerts: List[Alert] = []
         for rule in rules:
-            count = count.get(rule.event_id, 0)
+            count = counts.get(rule.event_id, 0)
             if count >= rule.threshold:
                 sample = by_id[rule.event_id][0]
                 alerts.append(self._build_alert(rule, count, sample))
                 logger.debug(f"rule '{rule.name}' executed  {count} times")
 
-            return sorted(alert, key=lambda a: _SEVERITY_ORDER.index(a.severity))
+        return sorted(alerts, key=lambda a: _SEVERITY_ORDER.index(a.severity))
 
 
-#private helpers
+    # private helpers
 
-def _build_alert(self, rule: Rule, count: int, sample:Event) -> Alert:
-    return Alert(
-        rule_name = rule.name,
-        event_id = rule.event_id,
-        severity = rule.severity,
-        mitre_technique = rule.mitre_technique,
-        mitre_name = rule.mitre_name,
-        description = rule.description,
-        occurence_cout = count,
-        sample_timestamp = sample.timestamp,
-        sample_computer = sample.computer,
-    )
+    def _build_alert(self, rule: Rule, count: int, sample: Event) -> Alert:
+        return Alert(
+            rule_name = rule.name,
+            event_id = rule.event_id,
+            severity = rule.severity,
+            mitre_technique = rule.mitre_technique,
+            mitre_name = rule.mitre_name,
+            description = rule.description,
+            occurence_count = count,
+            sample_timestamp = sample.timestamp,
+            sample_computer = sample.computer,
+        )

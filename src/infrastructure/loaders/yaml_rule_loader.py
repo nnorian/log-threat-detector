@@ -3,9 +3,9 @@
 
 import os 
 import logging 
-from typing import ListOptional 
+from typing import List, Optional
 
-import yaml_rule_loader
+import yaml
 
 from domain.entities import Rule, Severity
 from domain.interfaces import IRuleLoader
@@ -20,7 +20,7 @@ _SEVERITY_MAP = {
 }
 
 _REQUIRED_FIELDS = {
-    "name", "event_id", "decription", "mitre_technique", "mitre_name", "severity",
+    "name", "event_id", "description", "mitre_technique", "mitre_name", "severity",
 }
 
 class YamlRuleLoader(IRuleLoader):
@@ -29,18 +29,18 @@ class YamlRuleLoader(IRuleLoader):
         if not os.path.isdir(source):
             raise NotADirectoryError(F"rules directory not found")
 
-        reles: List[Rule] = []
+        rules: List[Rule] = []
 
         for filename in sorted(os.listdir(source)):
             if not filename.endswith(".yml"):
                 continue
-            
+
             rule = self._load_file(os.path.join(source, filename))
             if rule is not None:
                 rules.append(rule)
 
-            logger.info(f"loaded {len(rules)} relues from '{source}'")
-            return rules_source
+        logger.info(f"loaded {len(rules)} rules from '{source}'")
+        return rules
 
 
 #private helpers
@@ -80,5 +80,5 @@ class YamlRuleLoader(IRuleLoader):
             return None
 
         except Exception as exc:
-            loggeer.warning(f"skipping '{filepath}' because of an unxpected error {exc}")
+            logger.warning(f"skipping '{filepath}' because of an unxpected error {exc}")
             return None

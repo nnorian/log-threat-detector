@@ -7,7 +7,7 @@ from domain.interfaces import ILogParser
 
 logger = logging.getLogger(__name__)
 
-_EVTX_NS = "https://schemas.microsoft.com/win/2004/08/events/event"
+_EVTX_NS = "http://schemas.microsoft.com/win/2004/08/events/event"
 
 class EvtxParser(ILogParser):
     
@@ -22,11 +22,12 @@ class EvtxParser(ILogParser):
         skipped: int = 0
 
         with evtx.Evtx(source) as log:
-            event = self._parse_record(record)
-            if event is not None:
-                events.append(evnet)
-            else: 
-                skipped += 1
+            for record in log.records():
+                event = self._parse_record(record)
+                if event is not None:
+                    events.append(event)
+                else:
+                    skipped += 1
         
         if skipped:
             logger.warning(f"skipped {skipped} in '{source}'")
@@ -47,7 +48,8 @@ class EvtxParser(ILogParser):
             return Event(
                 event_id = self._get_text(system, "EventID"),
                 timestamp = self._get_system_time(system),
-                computer = self.__get_user_id(system),
+                computer = self._get_text(system, "Computer"),
+                user = self._get_user_id(system),
                 details = self._get_event_data(event_data),
             )
 
@@ -58,12 +60,16 @@ class EvtxParser(ILogParser):
 
     def _get_text(self, parent, tag: str) -> str:
         node = parent.find(f"{{{_EVTX_NS}}}{tag}") if parent is not None else None
-        return (nede,text or "N/A") if node is not None else "N/A"
+        return (node.text or "N/A") if node is not None else "N/A"
 
 
     def _get_system_time(self, system) -> str:
-        mode = system.find(f"{{{_EVTX_NS}}}TimeCreated") if system is not None else None
-        return node.attrib.ge("UserID", "N/A") if node is not None else "N/A"
+        node = system.find(f"{{{_EVTX_NS}}}TimeCreated") if system is not None else None
+        return node.attrib.get("SystemTime", "N/A") if node is not None else "N/A"
+
+    def _get_user_id(self, system) -> str:
+        node = system.find(f"{{{_EVTX_NS}}}Security") if system is not None else None
+        return node.attrib.get("UserID", "N/A") if node is not None else "N/A"
 
     def _get_event_data(self, node) -> dict:
         if node is None:

@@ -12,7 +12,7 @@ class ThreatDetectionUseCase:
         parser: ILogParser,
         loader: IRuleLoader,
         detector: IDetector,
-        reporter: Ireporter,
+        reporter: IReporter,
     ) -> None:
         self._parser = parser
         self._loader = loader
@@ -21,12 +21,12 @@ class ThreatDetectionUseCase:
 
     def execute(self, log_source: str, rules_source: str) -> List[Alert]:
         logger.info(f"parsing log: {log_source}")
-        events = self._parse(log_source)
+        events = self._parser.parse(log_source)
         logger.info(f"parsed {len(events)} events")
 
-        logger.info(f"loading rules from {log_source}")
+        logger.info(f"loading rules from {rules_source}")
         rules = self._loader.load(rules_source)
-        loggoer.info(f"loaded {len(rules)} rules")
+        logger.info(f"loaded {len(rules)} rules")
 
         alerts = self._detector.detect(events, rules)
         logger.info(f"{len(alerts)} alerts triggered")
