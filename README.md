@@ -13,7 +13,7 @@ $ python src/presentation/cli.py -f samples/credential_access.evtx
 Report saved -> reports/report_20240215_143022.md
 ```
 
-![Demo screenshot](reports/images/image.png)
+![Demo screenshot](images/image.png)
 ---
 
 1. Parses binary `.evtx` Windows Event Log files
